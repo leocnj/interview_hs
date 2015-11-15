@@ -1,0 +1,26 @@
+results.
+
+wide_item SELT first impression vs. CAWRS expert rating (mean from 10 scores)
+            [,1]
+frd   0.30285006
+nvs  -0.09319568
+awk  -0.12311835
+conf  0.22486674
+eng   0.22360891
+exc   0.24163331
+clm   0.08490254
+auth  0.02643819
+nvb   0.23034705
+acct -0.06108729
+mono -0.02857029
+und   0.04523206
+prof  0.35094150
+soph  0.27300440
+coh   0.13222110
+hol   0.51202132
+
+> lm.beta(fit.item)
+         frd          nvs          awk         conf          eng          exc          clm         auth 
+ 0.069166594  0.018944257 -0.033904155  0.041809023  0.001282818  0.112367124 -0.011189242 -0.171354249 
+         nvb         acct         mono          und         prof         soph          coh          hol 
+-0.091888721 -0.033274753  0.131730783 -0.182778327  0.139996173  0.003513211 -0.046320839  0.570068251 
