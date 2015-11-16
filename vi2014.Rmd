@@ -1,0 +1,56 @@
+---
+title: "VI2014"
+author: "Lei Chen"
+date: "November 16, 2015"
+output: html_document
+---
+
+# IRR on both BARS and SELT ratings
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+load(file="vi2014.RData")
+library(irr)
+#library(plyr)
+library(magrittr)
+library(tidyr)
+library(dplyr)
+library(xtable)
+```
+
+## Personality ratings (n=7)
+```{r, echo=FALSE, eval=T, results='asis'}
+irr_pers <- pers_twornds %>%
+  group_by(type) %>%
+  summarise(icc=icc(cbind(rBP, rDE, rJS, rMC, rRV, R1A, R1B))$value,
+            corr=meancor(cbind(rBP, rDE, rJS, rMC, rRV, R1A, R1B))$value)
+  print(xtable(irr_pers, auto = T), type="html")
+```
+
+## Other first-impression ratings (n=2)
+```{r, echo=FALSE, eval=T, results='asis'}
+irr_other <- df.rnd1.other %>%
+  group_by(type) %>%
+  summarise(icc=icc(cbind(R1A, R1B))$value,
+            corr=meancor(cbind(R1A, R1B))$value)
+  print(xtable(irr_other, auto = T), type="html")
+```
+
+## BARS rating (n=10)
+per item
+```{r, echo=FALSE, eval=T, results='asis'}
+  irr_bars1 <- bars_indv %>%
+  group_by(gpid) %>%
+  summarise(icc=icc(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10))$value,
+            corr=meancor(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10))$value)
+  print(xtable(irr_bars1, auto = T), type="html")
+```
+
+per item-group
+```{r, echo=FALSE, eval=T, results='asis'}
+  # per question group
+  irr_bars2 <- bars_indv %>%
+  group_by(gp) %>%
+  summarise(icc=icc(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10))$value,
+            corr=meancor(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10))$value)
+  print(xtable(irr_bars2, auto = T), type="html")
+```

@@ -171,3 +171,15 @@ selt.ave <- selt %>%
   mutate(hol=(Holistic.1+Holistic.2)/2) %>%
   select(videoID, frd, nvs, awk, conf, eng, exc, clm, auth, nvb, acct, mono,
          und, prof, soph, coh, hol, subj, item)
+
+# need this for computing IRR.
+df.rnd1.other <- rbind_list(onetrait(selt, "FRIENDLY"), onetrait(selt, "NERVOUS"),
+                            onetrait(selt, "AWKWARD"), onetrait(selt, "CONFIDENT"),
+                            onetrait(selt, "ENGAGED"), onetrait(selt, "EXCITED"),
+                            onetrait(selt, "CALM"), onetrait(selt, "AUTHENTIC"),
+                            onetrait(selt, "NVB"), onetrait(selt, "ACCENT"),
+                            onetrait(selt, "MONO"), onetrait(selt, "UNDERSD"),
+                            onetrait(selt, "PROF"), onetrait(selt, "SOPH"),
+                            onetrait(selt, "COHERENT"))
+
+                            

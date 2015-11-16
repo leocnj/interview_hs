@@ -69,4 +69,4 @@ fit.gp03<- lm(form, filter(wide_item, gp=="G3"))
 fit.gp04<- lm(form, filter(wide_item, gp=="G4"))
 
 # save DFs
-save(pers_twornds, bars_indv, wide_subj, wide_item,file="vi2014.RData")
+save(pers_twornds, df.rnd1.other, bars_indv, wide_subj, wide_item,file="vi2014.RData")
