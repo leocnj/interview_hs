@@ -54,3 +54,15 @@ per item-group
             corr=meancor(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10))$value)
   print(xtable(irr_bars2, auto = T), type="html")
 ```
+
+per subj
+```{r, echo=FALSE, eval=T, results='asis'}
+  # per question group
+  irr_bars3 <- bars_persubj %>%
+  group_by(type) %>%
+  summarise(icc=icc(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10))$value,
+            corr=meancor(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10))$value)
+  print(xtable(irr_bars3, auto = T), type="html")
+```
+
+
