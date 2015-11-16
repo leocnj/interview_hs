@@ -10,6 +10,7 @@ library(xlsx)
 library(plyr)
 library(dplyr)
 library(magrittr)
+library(tidyr)
 
 
 file <- "hsraw/interviewRating-round2.xlsx"
@@ -135,6 +136,19 @@ pers_twornds <- merge(pers_all, df.rnd1, by=c("vid", "type"))
 pers_twornds %>%
   mutate(rAVE=(rBP+rDE+rJS+rMC+rRV+R1A+R1B)/7.0)
 
+# 11/16/2015
+# PERS
+pers_twornds$mean <- rowMeans(pers_twornds[,3:9], na.rm = FALSE)
+pers_wide <- spread(pers_twornds[,c("vid", "type","mean")], type, mean)
+
+pers_wide$subj <- substr(pers_wide$vid, 1, 2)
+# pers_wide$item <- substr(pers_wide$vid, 12, 13)
+
+pers_wide_subj <- pers_wide %>%
+  select(-vid) %>%
+  group_by(subj) %>%
+  summarise_each(funs(mean(., na.rm = TRUE)))
+
 # 11/15/2015
 #
 # focused on first impression ratings done in the round 1.
@@ -157,9 +171,3 @@ selt.ave <- selt %>%
   mutate(hol=(Holistic.1+Holistic.2)/2) %>%
   select(videoID, frd, nvs, awk, conf, eng, exc, clm, auth, nvb, acct, mono,
          und, prof, soph, coh, hol, subj, item)
-
-
-
-
- 
-

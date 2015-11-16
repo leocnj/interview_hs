@@ -5,7 +5,9 @@
 #
 # library(xlsx)
 library(stringr)
-# library(plyr)
+library(plyr)
+library(magrittr)
+library(tidyr)
 library(dplyr)
 
 # convert P(\d+)Q(\d+) id to subj-segment-item style used by SELT
@@ -86,3 +88,16 @@ colnames(bars_persubj) <- tenraters
 
 bars_persubj$subj <- unlist(lapply(rownames(bars_persubj), FUN=getsubj))
 bars_persubj$type <- unlist(lapply(rownames(bars_persubj), FUN=getcat))
+bars_persubj$mean <- rowMeans(bars_persubj[,1:10])
+
+# fail to run on 11/16/2015
+# each subj's sum of item scores
+# bars_persubj_items <- bars_indv %>%
+#  group_by(subj) %>%
+#  summarise(mean(mean))
+
+# long to wide
+bars_persubj_final <- spread(select(bars_persubj, mean, subj, type), type, mean)
+# _final contains per-subj NVB, Holistic, Vocal scores
+
+# bars_persubj_final <- merge(tmp, bars_persubj_items, by="subj")
