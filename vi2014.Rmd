@@ -17,11 +17,20 @@ library(dplyr)
 library(xtable)
 ```
 
+Note that we used the following parameters when computing Intra-Class Correlation (ICC).
+```{r}
+my.icc <- function(mx){
+  icc <- icc(mx, model="twoway", type="consistency", unit="average")
+  icc$value
+  
+}
+```
+
 ## Personality ratings (n=7)
 ```{r, echo=FALSE, eval=T, results='asis'}
 irr_pers <- pers_twornds %>%
   group_by(type) %>%
-  summarise(icc=icc(cbind(rBP, rDE, rJS, rMC, rRV, R1A, R1B))$value,
+  summarise(icc=my.icc(cbind(rBP, rDE, rJS, rMC, rRV, R1A, R1B)),
             corr=meancor(cbind(rBP, rDE, rJS, rMC, rRV, R1A, R1B))$value)
   print(xtable(irr_pers, auto = T), type="html")
 ```
@@ -30,7 +39,7 @@ irr_pers <- pers_twornds %>%
 ```{r, echo=FALSE, eval=T, results='asis'}
 irr_other <- df.rnd1.other %>%
   group_by(type) %>%
-  summarise(icc=icc(cbind(R1A, R1B))$value,
+  summarise(icc=my.icc(cbind(R1A, R1B)),
             corr=meancor(cbind(R1A, R1B))$value)
   print(xtable(irr_other, auto = T), type="html")
 ```
@@ -40,7 +49,7 @@ per item
 ```{r, echo=FALSE, eval=T, results='asis'}
   irr_bars1 <- bars_indv %>%
   group_by(gpid) %>%
-  summarise(icc=icc(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10))$value,
+  summarise(icc=my.icc(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10)),
             corr=meancor(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10))$value)
   print(xtable(irr_bars1, auto = T), type="html")
 ```
@@ -50,7 +59,7 @@ per item-group
   # per question group
   irr_bars2 <- bars_indv %>%
   group_by(gp) %>%
-  summarise(icc=icc(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10))$value,
+  summarise(icc=my.icc(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10)),
             corr=meancor(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10))$value)
   print(xtable(irr_bars2, auto = T), type="html")
 ```
@@ -60,9 +69,15 @@ per subj
   # per question group
   irr_bars3 <- bars_persubj %>%
   group_by(type) %>%
-  summarise(icc=icc(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10))$value,
+  summarise(icc=my.icc(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10)),
             corr=meancor(cbind(R1,R2,R3,R4,R5,R6,R7,R8,R9,R10))$value)
   print(xtable(irr_bars3, auto = T), type="html")
 ```
 
+# Linking Two Types of Ratings
+On item level, compute firs-impression scores' correlation to Hireability scores
+```{r, echo=FALSE, eval=T, results='asis'}
+  tb <- cor(wide_item[,2:17], wide_item$mean, use="complete.obs")
+  print(xtable(tb, auto = T), type="html")
+```
 
