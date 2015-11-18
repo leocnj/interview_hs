@@ -1,0 +1,144 @@
+---
+title: "Measuring and Optimizing the Quality of Crowd-sourced Human Rating"
+author: "Gary Feng; Lei Chen"
+date: "November 16, 2015"
+output: pdf_document
+csl: apa.csl
+bibliography: ICC_references.bib
+---
+
+## Introduction
+
+The overarching goal of this project is to explore ways in which we can simultaneously increase the quality of human ratings of multimodal performances while reducing the cost and time required. The approach we take is to use multiple minimally trained human raters, and to rely on the average (or other forms of aggregated) rating as a more reliable and valid measure of performance. Toward this end, we need to evaluate the reliability of individual raters as well as the average rating. We will also need ways to estimate the number of raters needed to achieve a predefined reliability for any single performance. In practice an effective system should be able to identify inconsistent raters as well as performance that generate non-converging responses.
+
+The first part of the paper attemps to identify a metric for reliability for aggregated ratings in the classical testing theory. We start with the intraclass correlation (ICC) family of measures [@shrout_intraclass_1979; @muller_critical_1994; @haggard_intraclass_1958; @fleiss_equivalence_1973; @bartko_various_1976; @bartko_intraclass_1966; @mcgraw_forming_1996; @lahey_intraclass_1983; @bonett_sample_2002; @swiger_variance_1964]. 
+
+- [ ] (Shold we discuss reliability in the generalizability framework, [@dimitrov2002reliability]?)
+
+Reliability measures defined in the classical testing theory may not be adequate for issues arise in a crowd-sourced rating application. The second part of the paper therefore outlines unique challenges in the definition and application of the notion of reliability in a rating study where human raters are dynamically allocated to scoring work products in order to maximize the quality and minimize the cost of rating. 
+
+## Metrics of Quality of Human Scoring
+
+Scoring or rating in the current context is the assignment of numers (or symbols that can be numerically labeled) to an assessment artifact. In this sense it is akin to the classical definition of measurement by S.S. Stevens, namely "the assignment of numbers to objects or events according to rules" [-@stevens1951mathematics, p. 21]. This definition makes no distinction between scoring by humans or by an algorithm -- in fact one could argue that  algorithmic scoring may be a purer manifestation of the "rules" Stevens referred to.
+
+Humans 
+
+### Scoring function and scoring quality
+
+Let us start by defining a scoring function, which is at the center of human rating and automated scoring. 
+
+Consider an artifact $A$ (e.g., a multimodal recording of a performance to be evaluated) represented as a multidimensional feature vector $\mathbf{\vec{A}}$ that is to be assigned a numeric value $x_i$ accoring to a certain criterion ( $r_i:\mathbf{\vec{A}}\mapsto \Re$), that maps $\mathbf{\vec{A}}$ to a real valued score by a rater $i$. We further assume that there exists a criterion $r$ (aka a rubric) that defines the "true" mapping ($r:\mathbf{\vec{A}}\mapsto \Re$), thus $x = r(\mathbf{\vec{A}})$ is the "true score" of $A$ according to $r$. 
+
+We can further speculate that the mapping occurs in two steps. The first is a mapping from the feature set to a probability distribution of possible scores, and a second step is taken to choose the value with the highest probability. Hence we can redefine the scoring function as:
+
+\[ r:\mathbf{\vec{A}}\mapsto p(x) \]
+
+where $p(x)$ is the likelihood of value $x$ represented as a probability distribution. The rater always chooses $x$ with the greatest likelihood.
+
+The quality of $x_i$ is intuitively the reduction of uncertainty about $x$ when $x_i$ is known. In other words, the posterior distribution of the true score should be narrowed after rater $i$ rated.
+
+\[ p(x|x_i) \]
+
+The above is construed differently from the classical testing theory due to the application we will pursue in Section 2. 
+
+- The artifact $A$ and its feature set $\mathbf{\vec{A}}$ is invariant, as the feature set will be extracted algorithmically in automated scoring models. Here we also assume that all raters perceive the features equally, though they would weigh the features differently in scoring.
+
+- Differences in ratings across raters are caused by differential mapping functions $r_i$. This is a departure from the general notion in the classical testing theory, where it is typically assumed that $x_i = x + e_i$ where $e_i$ is $i.i.d.$. We push the individual differences from scores to the scoring function because an automated scoring function is essentially an algorithmic reliazation of such a scoring function. Furthermore, we anticipate idiosyncratic yet self-consistent scoring functions for individual raters in a crowd-sourced human scoring study. We need to model these rather than simply sweeping them under the rug of error variance. 
+
+- We construe the quality of a score in term of how it shed light on the "true" score, not necessarily on how numerically close it is to the true score. We do not assume the numeric value is on something more than a nominal scale. For example, $x$ may represent a label for a statement. In this case, $x_i - x$ is undefined. However, $p(x|x_i)$ always is.
+
+### Scoring quality in the classical testing theory
+
+Our immediate concern is that we have conducted a generalizbility study [@cite] where multiple raters rated all artifacts. We need to estimate the quality of the rating. classical testing theory provides the convenient machinary.
+
+We now review how quality is defined in classical testing theory frameworks. We will come to focus on the ICC family indecies. 
+
+Two quantities are often used in classical testing theory to evaluate the quality of a measurement, namely reliability and validity, or in Muller and Buttner [-@muller_critical_1994], comformity and consistency, respectively. 
+
+### Forms of ICC
+
+Numerous forms of ICCs have been identified in the literature [@shrout_intraclass_1979; @mcgraw_forming_1996]. They can be derived from an ANOVA framework, depending on assumptions about the rating situation.
+
+Let's start with a model presented by the classic McGraw and Wong [-@mcgraw_forming_1996] paper. We shall focus on the derivation of the ICC(_c_, _k_) model. 
+
+
+More generally, the following classes of ICCs are often used in practice. 
+
+#### ICC(1,1)
+
+A case where different raters rated each item, or an one-way ANOVA model.
+
+#### ICC(2,1)
+
+This correspond to a two-way ANOVA with random effects for both the rater and subjects. The rationale for designating raters as random effect, however, may be several [@hancock2010reviewer, p. 151]. One possibility is when the decisions of the study will be based on absolute scores (e.g., when there is an absolute cut-off score). Another common case is when the investigator wishes to use the fully-crossed G study results to estimate future D study where raters may not be fully-crossed; i.e., when we will in the future use a different rater to rate each subject.
+
+
+#### ICC(3,1)
+
+ICC(3,1) corresponds to a mixed-effect two-way ANOVA with random effect for subjects but fixed effects for the rater. 
+
+#### ICC with k raters
+
+When the intended measure of scoring quality is based on the average of all k raters, we arrive at the following models.
+
+
+### Choosing a reliabilty measure
+
+In the classic paper Shrout and Fleiss [-@shrout_intraclass_1979] couched measurement selection in the ANOVA framework. In our case, where the primary interest is in the reliability of the mean score, we are in effect conducting what Shrout and Fleiss [-@shrout_intraclass_1979, p. 426] called "a substantive study (D study)." The reliability of the mean rating is always greater than that of individual raters [@lord1968statistical]. 
+
+Shrout and Fleiss recommended that the number of observations (_m_) used to form the mean should be determined by a pilot reliability study (G study); see the next section. Alternatively this may be decided on "substantive grouns," meaning by practical considerations. Once a minimal number of individual raters is established, the reliability of the average rating of the _m_ raters can be estimated using the Spearman-Brown forula and the ICC model for single rater reliability index, i.e., ICC(1,1), ICC(2,1) or ICC(3,1). **Huh? This doesn't make much sense**
+
+Numerous authors have provided decision guidelines based on the Shrout-Fleiss model [e.g., @hancock2010reviewer, p. 151]. McGraw and Wong [-@mcgraw_forming_1996] extended the Shrout and Fleiss family of ICCs and provided a decision tree for selecting the ICC measure for different use cases. According to the M-W framework [@mcgraw_forming_1996, p40], the appropriate model for our case, namely a two-way, random effect, average measure, consistency-based index, should be the ICC(_c_, _k_)
+
+Muller and Buttner [-@muller_critical_1994] provided a decision tree to guide the selection of a reliability metric for a particular rating study. According to the decision tree, if we assume that raters are randomly selected, each rater rates each subject, and measurements are **not** exchanable, the correct measurements are Model B (k, P), Lin (2, P), or Kappa (2, NP). **Check to make sure they are ICC(2,k)**
+
+
+### Determining the number of raters
+
+The number of raters required to achieve a certain level of reliability is discucussed in [@shrout_intraclass_1979]. Related, [@bonett_sample_2002] gave an approximation for deteriming the sample size requirements for estimating intraclass correlations with desired precision. 
+
+Note, however, that these discussion assume that the number of raters will be fixed for different artifacts, at least missing values are none sysmatic. 
+
+In our application, however, we seek to assign different raters and different numbers of raters to each artifact. The assignment will be non-random. This violates the basic assumptions of the classical testing theory based derivations. Hence the results here are not applicable. 
+
+### Calculating the ICC and related statistics
+
+In R ICC can be calculated using the function "icc" with the packages [psy](http://cran.r-project.org/web/packages/psy/index.html) or [irr](http://cran.r-project.org/web/packages/irr/index.html), or via the function "ICC" in the package [psych](http://www.personality-project.org/r/html/ICC.html).
+
+
+## Optimizing Scoring Quality for Crowd-sourced Scoring
+
+Our goal in the second section is to design a scoring model where raters will be dynamically assigned to artifacts in order to maximize the quality of the scoring while minimizing a cost function for scoring. Results from the classical testing theory do not tell us how to dynamically allocate scoring resources to optimize scoring quality. Nevertheless they provide some basic parameters to start. 
+
+### Defining a cost function
+
+The cost of a rater $i$ to score an artifact $A_j$ is function of 
+
+- the time spent to score $A_j$
+- the hourly rate of the rater $i$, assuming the rate is constant
+
+though additional factor may come into play:
+
+- the availability of $i$, i.e., the wait time for $i$ to rate $A_j$
+- the opportunity cost of $i$ not rating other artifacts
+
+But in general we assume the cost of the rater is independent from the artifact $A$, or at least conditionally independent after some simple covariates are identified (e.g., the length of video recording). 
+
+### Quality of rater
+
+Let's attempt to define the quality of a rater. For a specific artifact $A_j$, the quality is the reduction of uncertainty about the true score distribution given $x_i$. 
+
+Over the population of $A$ the quality can be defined over the joint distribution, which is strict. We could also define the quality based on the marginal distributions, which leaves open the rater-item interaction, where $r_ij$ is different from $r_i$. We shall deal with the simple case first.
+
+### Optimizing for quality
+
+Here is a simple strategy for optimization: Given a pool of $m$ artifacts and $n$ raters each having a scoring function $r_1 \dots r_n$ (or $r_1j \dots r_nj$ for the artifact $A_j$, where $j= 1 \dots m$), we set a minimal threshold of quality, and minimize the cost function. 
+
+
+
+----
+
+## References
+
+
+
