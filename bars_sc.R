@@ -5,7 +5,9 @@
 #
 # library(xlsx)
 library(stringr)
-# library(plyr)
+library(plyr)
+library(magrittr)
+library(tidyr)
 library(dplyr)
 
 # convert P(\d+)Q(\d+) id to subj-segment-item style used by SELT
@@ -56,6 +58,9 @@ colnames(bars_indv) <- tenraters
 bars_indv$videoID <- unlist(lapply(rownames(bars_indv), FUN=split_PQ))
 # get mean score from 10 raters.
 bars_indv$mean <- rowMeans(bars_indv[,1:10])
+# get median score from 10 raters.
+# bars_indv$median <- apply(bars_indv[,1:10], 1, median)
+
 # need group_id 1 to 4 for 12 items.
 bars_indv$gpid <- substr(bars_indv$videoID, 12, 13)
 
@@ -75,9 +80,24 @@ bars_indv$gp[bars_indv$gpid=="10"] <- "G4"
 bars_indv$gp[bars_indv$gpid=="11"] <- "G4"
 bars_indv$gp[bars_indv$gpid=="12"] <- "G4"
 
+bars_indv$subj <- substr(bars_indv$videoID, 1, 2)
+
 # CAWRS's per-subj rating on overall, nvb, and vocal.
 bars_persubj <- data.frame(t(data.matrix(select(bars, OverallHir.1.:Vocal.38.))))
 colnames(bars_persubj) <- tenraters
 
 bars_persubj$subj <- unlist(lapply(rownames(bars_persubj), FUN=getsubj))
 bars_persubj$type <- unlist(lapply(rownames(bars_persubj), FUN=getcat))
+bars_persubj$mean <- rowMeans(bars_persubj[,1:10])
+
+# fail to run on 11/16/2015
+# each subj's sum of item scores
+# bars_persubj_items <- bars_indv %>%
+#  group_by(subj) %>%
+#  summarise(mean(mean))
+
+# long to wide
+bars_persubj_final <- spread(select(bars_persubj, mean, subj, type), type, mean)
+# _final contains per-subj NVB, Holistic, Vocal scores
+
+# bars_persubj_final <- merge(tmp, bars_persubj_items, by="subj")

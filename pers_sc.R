@@ -9,6 +9,9 @@
 library(xlsx)
 library(plyr)
 library(dplyr)
+library(magrittr)
+library(tidyr)
+
 
 file <- "hsraw/interviewRating-round2.xlsx"
 pers <- read.xlsx(file, sheetIndex=1, startRow=3, header=F)  # read first sheet
@@ -124,3 +127,59 @@ df.rnd1 <- rbind_list(df.rnd1.EXTRAV, df.rnd1.EMSTB, df.rnd1.AGREE,
 
 pers_twornds <- merge(pers_all, df.rnd1, by=c("vid", "type"))
 # total 2514 x 9 
+
+# 10/27/2015
+# 
+# for each trait, compute average score (removing MAX and MIN)
+# format a new DF for each response and its averaged trait scores.
+
+pers_twornds %>%
+  mutate(rAVE=(rBP+rDE+rJS+rMC+rRV+R1A+R1B)/7.0)
+
+# 11/16/2015
+# PERS
+pers_twornds$mean <- rowMeans(pers_twornds[,3:9], na.rm = FALSE)
+pers_wide <- spread(pers_twornds[,c("vid", "type","mean")], type, mean)
+
+pers_wide$subj <- substr(pers_wide$vid, 1, 2)
+# pers_wide$item <- substr(pers_wide$vid, 12, 13)
+
+pers_wide_subj <- pers_wide %>%
+  select(-vid) %>%
+  group_by(subj) %>%
+  summarise_each(funs(mean(., na.rm = TRUE)))
+
+# 11/15/2015
+#
+# focused on first impression ratings done in the round 1.
+selt.ave <- selt %>%
+  mutate(frd=(FRIENDLY.1+FRIENDLY.2)/2) %>%
+  mutate(nvs=(NERVOUS.1+NERVOUS.2)/2) %>%
+  mutate(awk=(AWKWARD.1+AWKWARD.2)/2) %>%
+  mutate(conf=(CONFIDENT.1+CONFIDENT.2)/2) %>%
+  mutate(eng=(ENGAGED.1+ENGAGED.2)/2) %>%
+  mutate(exc=(EXCITED.1+EXCITED.2)/2) %>%
+  mutate(clm=(CALM.1+CALM.2)/2) %>%
+  mutate(auth=(AUTHENTIC.1+AUTHENTIC.2)/2) %>%
+  mutate(nvb=(NVB.1+NVB.2)/2) %>%
+  mutate(acct=(ACCENT.1+ACCENT.2)/2) %>%
+  mutate(mono=(MONO.1+MONO.2)/2) %>%
+  mutate(und=(UNDERSD.1+UNDERSD.2)/2) %>%
+  mutate(prof=(PROF.1+PROF.2)/2) %>%
+  mutate(soph=(SOPH.1+SOPH.2)/2) %>%
+  mutate(coh=(COHERENT.1+COHERENT.2)/2) %>%
+  mutate(hol=(Holistic.1+Holistic.2)/2) %>%
+  select(videoID, frd, nvs, awk, conf, eng, exc, clm, auth, nvb, acct, mono,
+         und, prof, soph, coh, hol, subj, item)
+
+# need this for computing IRR.
+df.rnd1.other <- rbind_list(onetrait(selt, "FRIENDLY"), onetrait(selt, "NERVOUS"),
+                            onetrait(selt, "AWKWARD"), onetrait(selt, "CONFIDENT"),
+                            onetrait(selt, "ENGAGED"), onetrait(selt, "EXCITED"),
+                            onetrait(selt, "CALM"), onetrait(selt, "AUTHENTIC"),
+                            onetrait(selt, "NVB"), onetrait(selt, "ACCENT"),
+                            onetrait(selt, "MONO"), onetrait(selt, "UNDERSD"),
+                            onetrait(selt, "PROF"), onetrait(selt, "SOPH"),
+                            onetrait(selt, "COHERENT"))
+
+                            
