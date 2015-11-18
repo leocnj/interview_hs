@@ -1,29 +1,52 @@
 ---
 title: "Measuring and Optimizing the Quality of Crowd-sourced Human Rating"
-author: "Gary Feng; Lei Chen"
+author: "Gary Feng, Lei Chen"
 date: "November 16, 2015"
-output: pdf_document
+output:
+  pdf_document:
+    highlight: zenburn
+    number_sections: yes
+    toc: yes
+  html_document:
+    theme: united
+    toc: yes
 csl: apa.csl
 bibliography: ICC_references.bib
 ---
 
-## Introduction
+# Introduction
 
-The overarching goal of this project is to explore ways in which we can simultaneously increase the quality of human ratings of multimodal performances while reducing the cost and time required. The approach we take is to use multiple minimally trained human raters, and to rely on the average (or other forms of aggregated) rating as a more reliable and valid measure of performance. Toward this end, we need to evaluate the reliability of individual raters as well as the average rating. We will also need ways to estimate the number of raters needed to achieve a predefined reliability for any single performance. In practice an effective system should be able to identify inconsistent raters as well as performance that generate non-converging responses.
+The goal of this paper is to explore ways in which we can simultaneously increase the quality of human ratings of multimodal performances while reducing the cost and time required. The scoring approach we take is to use multiple minimally trained human raters, and to rely on the average (or other forms of aggregated) rating as a more reliable and valid measure of performance. Toward this end, we need to evaluate the reliability of individual raters as well as the average rating. We will also need ways to estimate the number of raters needed to achieve a predefined reliability for any single performance. In practice an effective system should be able to identify inconsistent raters as well as performance that generate non-converging responses.
 
-The first part of the paper attemps to identify a metric for reliability for aggregated ratings in the classical testing theory. We start with the intraclass correlation (ICC) family of measures [@shrout_intraclass_1979; @muller_critical_1994; @haggard_intraclass_1958; @fleiss_equivalence_1973; @bartko_various_1976; @bartko_intraclass_1966; @mcgraw_forming_1996; @lahey_intraclass_1983; @bonett_sample_2002; @swiger_variance_1964]. 
+We begin by putting this reserch in the larger context of improving human and automated scoring in assessment. We argue that the classical theories of measurement are ill-suited for the new challenges. We outline a theory of measurement that focuses on the scoring function that maps observable features to a confidence or likelihood function.  
 
-- [ ] (Shold we discuss reliability in the generalizability framework, [@dimitrov2002reliability]?)
+The second part of the paper attemps to identify a metric for measurement quality based on the theory. We start with measurement quality in the classical testing theory, focusing in particular on the intraclass correlation (ICC) family of measures [@shrout_intraclass_1979; @muller_critical_1994; @haggard_intraclass_1958; @fleiss_equivalence_1973; @bartko_various_1976; @bartko_intraclass_1966; @mcgraw_forming_1996; @lahey_intraclass_1983; @bonett_sample_2002; @swiger_variance_1964]. We show that while such indices are useful in the part of our research that follow the traditional psychometric practices, they do not provide ready solutions to the problem we ultimately wish to solve. 
 
-Reliability measures defined in the classical testing theory may not be adequate for issues arise in a crowd-sourced rating application. The second part of the paper therefore outlines unique challenges in the definition and application of the notion of reliability in a rating study where human raters are dynamically allocated to scoring work products in order to maximize the quality and minimize the cost of rating. 
+The third part of the paper therefore outlines unique challenges in the definition and application of the notion of reliability in a rating study where human raters are dynamically allocated to scoring work products in order to maximize the quality and minimize the cost of rating. We propose an approach to evaluate the quality of rating and discuss its application in optimizing crowd-sourced human rating studies.
 
-## Metrics of Quality of Human Scoring
+# Toward a Theory of Scoring
 
-Scoring or rating in the current context is the assignment of numers (or symbols that can be numerically labeled) to an assessment artifact. In this sense it is akin to the classical definition of measurement by S.S. Stevens, namely "the assignment of numbers to objects or events according to rules" [-@stevens1951mathematics, p. 21]. This definition makes no distinction between scoring by humans or by an algorithm -- in fact one could argue that  algorithmic scoring may be a purer manifestation of the "rules" Stevens referred to.
+Scoring or rating in the current context is the assignment of numbers (or symbols that can be numerically labeled) to an artifact. In this sense it is akin to the classical definition of measurement by S.S. Stevens, namely "the assignment of numbers to objects or events according to rules" [-@stevens1951mathematics, p. 21]. This definition makes no distinction between scoring by humans or by an algorithm -- in fact one could argue that  algorithmic scoring is a purer manifestation of the "rules" Stevens referred to.
 
-Humans 
+Subsequent theories of measurement highlight the functions (or rules in Stevens, 1951) that map from the subject to a number, although in trying to accommodate the measurement of abstract ideas they move toward the notion of latent variables. Carmines and Zeller [-@carmines1979reliability], for example, defines measurement as the process that links abstract concepts to empirical indicants, or "the particular sense data at hand" [@riley1963sociological]. Carmines and Zeller further noted that in order to link *observable response* (the "sense data at hand") on the one hand and the *underlying unobservable concept* on the other, there has to be a strong relationship between empirically grounded observations and the unobservable concepts. The warrant for this strong relationship -- and hence the strength of the measurement model -- comes from the *auxilary theory* that specifies the relationship between the concept and indicators. 
 
-### Scoring function and scoring quality
+This classical notion of measurement, however, does not suit problems in scoring complex artifacts by humans or by computer algorithms. Specifically,
+
+- The notion of *observable responses* becomes murkey, because unlike in traditional tests where responses are explicitly and narrowly defined (e.g., marking option A), in the context of educational assessment artifacts to be evaluated often have to be characterized by a collection of (multidimensional and potentially infinitely large set of) features. A classic example is an essay, which can be decomposed into hundreds of linguistic features or more [@cite_e_rater]. What constitute *observable responses* becomes unclear. Instead, it is helpful to go back to Riley's [-@riley1963sociological] notion of "sense data at hand." The features that describe the artifact must be *sensed* by the person or algorithm who does the rating. This is the basis for rating.
+
+- While the idea of an *unobservable concept* may be useful in constructing a rubric, it has little utility in the context of rating artifacts once a rubric is defined. By any definition of measurement, once we are able to assign numbers or labels in a systematic and justifiable way, the *unobservable* is now measured or observed. 
+
+    + For those who wish to argue *measured* is different from *observed*, let's note that in order to claim an *observable response* is observed, you have to be able to systematically label it, which is logically equivalent to assigning a numerical value in the nominal scale, AKA measuring it.
+    + This is in fact not a trivil point. In developing a scoring algorithm one routinely 
+
+- Hence in rating or scoring an artifact, the rubric takes primacy. A rubric is the "rules" in S.S. Stevens' definition of measurement. It also defines the sysmatic mapping from "sense data at hand" to the concept that used to be *unobservable* such that with the rubric, the concept becomes measured or observed. 
+
+    + Note that the rubric is **not** the *auxilary theory* that is required in classic theories of measurement in order to provide warrant to the measurement [@carmines1979reliability]. A rubric is not a theory. Rather it is nothing more or less than a system of rules or a mapping from "sense data at hand" about an artifact to a numeric value that we shall call the rating or score for the artifact. Sometimes it is justified by theories; other times it may be putative.
+
+    + A rubric can be called an operationalization of an auxilary theory, although this does little to clarify the relation. Operationalization is perhaps best understood as a set of putative rules justified on the basis of a theory but not necessarily uniquely predicted by it. In research operatinalization can sometimes be used as a hedge against situations where empirical (read: observed or measured) data do not turn out as predicted by the theory (suggesting that the measurement is ill-defined or of poor quality). In assessment a rubric is often revised when the mapping is found to be unsatisfactory. (**uh, what exactly am I arguing?**)
+
+
+## Scoring function and scoring quality
 
 Let us start by defining a scoring function, which is at the center of human rating and automated scoring. 
 
@@ -47,7 +70,12 @@ The above is construed differently from the classical testing theory due to the 
 
 - We construe the quality of a score in term of how it shed light on the "true" score, not necessarily on how numerically close it is to the true score. We do not assume the numeric value is on something more than a nominal scale. For example, $x$ may represent a label for a statement. In this case, $x_i - x$ is undefined. However, $p(x|x_i)$ always is.
 
-### Scoring quality in the classical testing theory
+
+# Metrics of Quality of Scoring
+
+- [ ] (Shold we discuss reliability in the generalizability framework, [@dimitrov2002reliability]?)
+
+## Scoring quality in the classical testing theory
 
 Our immediate concern is that we have conducted a generalizbility study [@cite] where multiple raters rated all artifacts. We need to estimate the quality of the rating. classical testing theory provides the convenient machinary.
 
@@ -55,7 +83,7 @@ We now review how quality is defined in classical testing theory frameworks. We 
 
 Two quantities are often used in classical testing theory to evaluate the quality of a measurement, namely reliability and validity, or in Muller and Buttner [-@muller_critical_1994], comformity and consistency, respectively. 
 
-### Forms of ICC
+## Forms of ICC
 
 Numerous forms of ICCs have been identified in the literature [@shrout_intraclass_1979; @mcgraw_forming_1996]. They can be derived from an ANOVA framework, depending on assumptions about the rating situation.
 
@@ -82,7 +110,7 @@ ICC(3,1) corresponds to a mixed-effect two-way ANOVA with random effect for subj
 When the intended measure of scoring quality is based on the average of all k raters, we arrive at the following models.
 
 
-### Choosing a reliabilty measure
+## Choosing a reliabilty measure
 
 In the classic paper Shrout and Fleiss [-@shrout_intraclass_1979] couched measurement selection in the ANOVA framework. In our case, where the primary interest is in the reliability of the mean score, we are in effect conducting what Shrout and Fleiss [-@shrout_intraclass_1979, p. 426] called "a substantive study (D study)." The reliability of the mean rating is always greater than that of individual raters [@lord1968statistical]. 
 
@@ -93,7 +121,7 @@ Numerous authors have provided decision guidelines based on the Shrout-Fleiss mo
 Muller and Buttner [-@muller_critical_1994] provided a decision tree to guide the selection of a reliability metric for a particular rating study. According to the decision tree, if we assume that raters are randomly selected, each rater rates each subject, and measurements are **not** exchanable, the correct measurements are Model B (k, P), Lin (2, P), or Kappa (2, NP). **Check to make sure they are ICC(2,k)**
 
 
-### Determining the number of raters
+## Determining the number of raters
 
 The number of raters required to achieve a certain level of reliability is discucussed in [@shrout_intraclass_1979]. Related, [@bonett_sample_2002] gave an approximation for deteriming the sample size requirements for estimating intraclass correlations with desired precision. 
 
@@ -101,16 +129,16 @@ Note, however, that these discussion assume that the number of raters will be fi
 
 In our application, however, we seek to assign different raters and different numbers of raters to each artifact. The assignment will be non-random. This violates the basic assumptions of the classical testing theory based derivations. Hence the results here are not applicable. 
 
-### Calculating the ICC and related statistics
+## Calculating the ICC and related statistics
 
 In R ICC can be calculated using the function "icc" with the packages [psy](http://cran.r-project.org/web/packages/psy/index.html) or [irr](http://cran.r-project.org/web/packages/irr/index.html), or via the function "ICC" in the package [psych](http://www.personality-project.org/r/html/ICC.html).
 
 
-## Optimizing Scoring Quality for Crowd-sourced Scoring
+# Optimizing Scoring Quality for Crowd-sourced Scoring
 
 Our goal in the second section is to design a scoring model where raters will be dynamically assigned to artifacts in order to maximize the quality of the scoring while minimizing a cost function for scoring. Results from the classical testing theory do not tell us how to dynamically allocate scoring resources to optimize scoring quality. Nevertheless they provide some basic parameters to start. 
 
-### Defining a cost function
+## Defining a cost function
 
 The cost of a rater $i$ to score an artifact $A_j$ is function of 
 
@@ -124,13 +152,13 @@ though additional factor may come into play:
 
 But in general we assume the cost of the rater is independent from the artifact $A$, or at least conditionally independent after some simple covariates are identified (e.g., the length of video recording). 
 
-### Quality of rater
+## Quality of rater
 
 Let's attempt to define the quality of a rater. For a specific artifact $A_j$, the quality is the reduction of uncertainty about the true score distribution given $x_i$. 
 
 Over the population of $A$ the quality can be defined over the joint distribution, which is strict. We could also define the quality based on the marginal distributions, which leaves open the rater-item interaction, where $r_ij$ is different from $r_i$. We shall deal with the simple case first.
 
-### Optimizing for quality
+## Optimizing for quality
 
 Here is a simple strategy for optimization: Given a pool of $m$ artifacts and $n$ raters each having a scoring function $r_1 \dots r_n$ (or $r_1j \dots r_nj$ for the artifact $A_j$, where $j= 1 \dots m$), we set a minimal threshold of quality, and minimize the cost function. 
 
@@ -138,7 +166,7 @@ Here is a simple strategy for optimization: Given a pool of $m$ artifacts and $n
 
 ----
 
-## References
+# References
 
 
 
