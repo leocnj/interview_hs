@@ -1,14 +1,14 @@
 ---
-title: "Measuring and Optimizing the Quality of Crowd-sourced Human Rating"
+title: "Measuring and Optimizing the Quality of Crowd-sourced Human Scoring"
 author: "Gary Feng, Lei Chen"
 date: "November 16, 2015"
 output:
+  html_document:
+    theme: united
+    toc: yes
   pdf_document:
     highlight: zenburn
     number_sections: yes
-    toc: yes
-  html_document:
-    theme: united
     toc: yes
 csl: apa.csl
 bibliography: ICC_references.bib
@@ -28,6 +28,8 @@ The third part of the paper therefore outlines unique challenges in the definiti
 
 Scoring or rating in the current context is the assignment of numbers (or symbols that can be numerically labeled) to an artifact. In this sense it is akin to the classical definition of measurement by S.S. Stevens, namely "the assignment of numbers to objects or events according to rules" [-@stevens1951mathematics, p. 21]. This definition makes no distinction between scoring by humans or by an algorithm -- in fact one could argue that  algorithmic scoring is a purer manifestation of the "rules" Stevens referred to.
 
+## Classical psychometric approaches
+
 Subsequent theories of measurement highlight the functions (or rules in Stevens, 1951) that map from the subject to a number, although in trying to accommodate the measurement of abstract ideas they move toward the notion of latent variables. Carmines and Zeller [-@carmines1979reliability], for example, defines measurement as the process that links abstract concepts to empirical indicants, or "the particular sense data at hand" [@riley1963sociological]. Carmines and Zeller further noted that in order to link *observable response* (the "sense data at hand") on the one hand and the *underlying unobservable concept* on the other, there has to be a strong relationship between empirically grounded observations and the unobservable concepts. The warrant for this strong relationship -- and hence the strength of the measurement model -- comes from the *auxilary theory* that specifies the relationship between the concept and indicators. 
 
 This classical notion of measurement, however, does not suit problems in scoring complex artifacts by humans or by computer algorithms. Specifically,
@@ -45,9 +47,11 @@ This classical notion of measurement, however, does not suit problems in scoring
 
     + A rubric can be called an operationalization of an auxilary theory, although this does little to clarify the relation. Operationalization is perhaps best understood as a set of putative rules justified on the basis of a theory but not necessarily uniquely predicted by it. In research operatinalization can sometimes be used as a hedge against situations where empirical (read: observed or measured) data do not turn out as predicted by the theory (suggesting that the measurement is ill-defined or of poor quality). In assessment a rubric is often revised when the mapping is found to be unsatisfactory. (**uh, what exactly am I arguing?**)
 
+## Functional approaches
+
 A different take on the problem of measurement comes from the functionalism tradition known as the Brunswik's Lens theory [@wolf2005brunswik; @brunswik1955representative, @Hammond1966]. 
 
-
+## A computational approach
 
 To begin to formulate the logical problem of scoring or rating in educational assessment, we acknowledge its similarity with measurement in that both involve a systematic assignment of numbers (or logcial equivalents) to something of interest, be it an object, event, or abstract concept. We depart, however, from the classical notions of measurement in the following ways:
 
@@ -75,26 +79,27 @@ The quality of $x_i$ is intuitively the reduction of uncertainty about $x$ when 
 
 \[ p(x|x_i) \]
 
-The above is construed differently from the classical testing theory due to the application we will pursue in Section 2. 
+The above is construed differently from the classical testing theory due to the application we will pursue in Section 3. 
 
-- The artifact $A$ and its feature set $\mathbf{\vec{A}}$ is invariant, as the feature set will be extracted algorithmically in automated scoring models. Here we also assume that all raters perceive the features equally, though they would weigh the features differently in scoring.
+- The artifact $A$ and its feature set $\mathbf{\vec{A}}$ are invariant. In automated scoring models the feature set will be extracted algorithmically and hence consistently. We also assume that all human raters perceive the features equally (e.g., all raters scoring a video performance can see the video and hear the speech), though they would weigh the features differently in scoring.
 
 - Differences in ratings across raters are caused by differential mapping functions $r_i$. This is a departure from the general notion in the classical testing theory, where it is typically assumed that $x_i = x + e_i$ where $e_i$ is $i.i.d.$. We push the individual differences from scores to the scoring function because an automated scoring function is essentially an algorithmic reliazation of such a scoring function. Furthermore, we anticipate idiosyncratic yet self-consistent scoring functions for individual raters in a crowd-sourced human scoring study. We need to model these rather than simply sweeping them under the rug of error variance. 
 
 - We construe the quality of a score in term of how it shed light on the "true" score, not necessarily on how numerically close it is to the true score. We do not assume the numeric value is on something more than a nominal scale. For example, $x$ may represent a label for a statement. In this case, $x_i - x$ is undefined. However, $p(x|x_i)$ always is.
 
+Our formulation has similarities with the functionalism tradition of Brunswik [@brunswik1955representative, @Hammond1966]. Like Brunswik (1955) we see scoring -- or learning to score -- as a problem of multidimensional probabilistic learning task, where the rater strives to discover the optimal combination of observed proximal features of the (distal) artifact in order to achieve a high quality rating. On the other hand, we are less concerned with the ecological functionlism of Brunswik's theory than finding a framework to support a computational model. We also do not limit ourselves to the multiple regression models that have been popular in the literature [@Hammand1966; @somebodyRecently].
 
 # Metrics of Quality of Scoring
 
-- [ ] (Shold we discuss reliability in the generalizability framework, [@dimitrov2002reliability]?)
 
 ## Scoring quality in the classical testing theory
 
-Our immediate concern is that we have conducted a generalizbility study [@cite] where multiple raters rated all artifacts. We need to estimate the quality of the rating. classical testing theory provides the convenient machinary.
+The issue of scoring quality has a long history in the classical literature on psychological testing. It is herefore a logical place to look for a solution. In addition, our immediate concern is that we have conducted a generalizbility study [@cite] where multiple raters rated all artifacts. We need to estimate the quality of the rating. Classical testing theory provides the convenient machinary.
 
-We now review how quality is defined in classical testing theory frameworks. We will come to focus on the ICC family indecies. 
+We now review how quality is defined in classical testing theory frameworks. Two quantities are often used in classical testing theory to evaluate the quality of a measurement, namely reliability and validity, or in Muller and Buttner [-@muller_critical_1994], comformity and consistency, respectively. (Shold we discuss reliability in the generalizability framework, [@dimitrov2002reliability]?)
 
-Two quantities are often used in classical testing theory to evaluate the quality of a measurement, namely reliability and validity, or in Muller and Buttner [-@muller_critical_1994], comformity and consistency, respectively. 
+We will come to focus on the ICC family indecies. 
+
 
 ## Forms of ICC
 
@@ -133,18 +138,18 @@ Numerous authors have provided decision guidelines based on the Shrout-Fleiss mo
 
 Muller and Buttner [-@muller_critical_1994] provided a decision tree to guide the selection of a reliability metric for a particular rating study. According to the decision tree, if we assume that raters are randomly selected, each rater rates each subject, and measurements are **not** exchanable, the correct measurements are Model B (k, P), Lin (2, P), or Kappa (2, NP). **Check to make sure they are ICC(2,k)**
 
+In R ICC can be calculated using the function "icc" with the packages [psy](http://cran.r-project.org/web/packages/psy/index.html) or [irr](http://cran.r-project.org/web/packages/irr/index.html), or via the function "ICC" in the package [psych](http://www.personality-project.org/r/html/ICC.html).
+
 
 ## Determining the number of raters
 
 The number of raters required to achieve a certain level of reliability is discucussed in [@shrout_intraclass_1979]. Related, [@bonett_sample_2002] gave an approximation for deteriming the sample size requirements for estimating intraclass correlations with desired precision. 
 
+## Limitations 
+
 Note, however, that these discussion assume that the number of raters will be fixed for different artifacts, at least missing values are none sysmatic. 
 
 In our application, however, we seek to assign different raters and different numbers of raters to each artifact. The assignment will be non-random. This violates the basic assumptions of the classical testing theory based derivations. Hence the results here are not applicable. 
-
-## Calculating the ICC and related statistics
-
-In R ICC can be calculated using the function "icc" with the packages [psy](http://cran.r-project.org/web/packages/psy/index.html) or [irr](http://cran.r-project.org/web/packages/irr/index.html), or via the function "ICC" in the package [psych](http://www.personality-project.org/r/html/ICC.html).
 
 
 # Optimizing Scoring Quality for Crowd-sourced Scoring
