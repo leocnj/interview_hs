@@ -3,12 +3,12 @@ title: "Measuring and Optimizing the Quality of Crowd-sourced Human Scoring"
 author: "Gary Feng, Lei Chen"
 date: "November 16, 2015"
 output:
-  html_document:
-    theme: united
-    toc: yes
   pdf_document:
     highlight: zenburn
     number_sections: yes
+    toc: yes
+  html_document:
+    theme: united
     toc: yes
 csl: apa.csl
 bibliography: ICC_references.bib
@@ -53,17 +53,17 @@ A different take on the problem of measurement comes from the functionalism trad
 
 ## A computational approach
 
-To begin to formulate the logical problem of scoring or rating in educational assessment, we acknowledge its similarity with measurement in that both involve a systematic assignment of numbers (or logcial equivalents) to something of interest, be it an object, event, or abstract concept. We depart, however, from the classical notions of measurement in the following ways:
+Scoring or rating in educational assessment is similar to measurement in that both involve a systematic assignment of numbers (or logcial equivalents) to something of interest, be it an object, event, or abstract concept. It differs, however, from the classical notions of measurement in the following ways:
 
-- The "thing" to be evaluated is a concrete but potentially complex artifact (e.g., an essay or a video recording of a performance), rather than some abstract latent concepts. Being tangible doesn't imply that it is *observable*, however. 
+- The "thing" to be evaluated is a concrete but potentially complex artifact (e.g., an essay or a video recording of a performance), rather than some abstract latent concept. The assignment of numbers must be based in one way or another on the artifact, not on abstract notions. A scorer or rater of an educational artifact cannot justify her assignment based on "this is how I felt;" it must be supported by evidence linked to the artifact. A fair scoring process must be as transparent as possible; declairing the "thing" to be rated on as unobservable or latent does nothing to solve the problem at hand. 
 
-- An artifact can be distingished from other artifacts by a collection of descriptors, including, for example, *this essay uses the word 'sophistication'* or *the interviewee smiled at video frame 4000*. While Riley (1963) may call them "particular sense data at hand," we use the phrase *features* that is widely used in computational sciences to describe the potentially infinite number of ways to characterize an artifact. 
+- Being tangible or perceptable doesn't imply that the artifact is *observable*, however. Rarely is an artifact in an educational assessment so simple that it can be quantified by a single number or classification (if so scoring is accomplished). We assume that an artifact can be distingished from other artifacts by a collection of descriptors, including, for example, *this essay uses the word 'sophistication'* or *the interviewee smiled at video frame 4000*. While Riley (1963) may call them "particular sense data at hand," we use the phrase *features* that is widely used in computational sciences to describe the potentially infinite number of ways to characterize an artifact. Features are **descriptive**, as opposed to **evaluative**, in that they are used to tell one artifact from other (potential) examples. Value assignment is done with a rubric (see below). By definition the features will not fit in a single dimension (or else a single feature or number is needed to distinguish the artifacts). Their internal structure can be complex (e.g., may require a complex graph to describe) and uncertain (e.g., dynamic), in which case the $i.i.d.$ requirement in traditional linear statistical models will likely be violated.
 
-- Rather than using the metaphor of measurement (implying unidimentionality and continuity), we see rating or scoring as foundamentally categorical. In other words, a rating or score is a label for a category. Assigning a score $x$ to an artifact $A$ is equivalent to the statement, *Artifact _A_ belongs to category _X_*. We do not presuppose any structure or dimentionality of the categories (e.g., categories can overlap, or one can have one category for each integer between 1 and 100), so long as they jointly divid the space of all possibilities exhaustively. 
+- Scoring or rating in educational assessment is evaluative, although not necessarily in the sense of rank ordering. Rather than using the metaphor of measurement (implying unidimentionality and continuity), we see rating or scoring as foundamentally categorical, i.e., the score assigned is a label for a category. Assigning a score $x$ to an artifact $A$ is equivalent to the assessment statement, *Artifact _A_ belongs to category _X_*, which can be evaluative if the category _X_ implies value. We do not presuppose any structure or dimentionality of the categories (e.g., categories can overlap, or one can have one category for each integer between 1 and 100), so long as they jointly divid the space of all possibilities exhaustively. The collection of assessment statements can evaluate an artifact in a unidimensional scale, multidimentional profile, or any other ways language permits. (Footnote: hereafter we use scores, ratings, and assessment statements interchangeably because we see numeric scores as labels for a logical statement. There may be contexts in which we wish to distinguish them, e.g., in reporting.)
 
-- Scoring or rating usually entails a rubric that describes how features of an artifact should be mapped to a numeric value (or a category label). The rubric can be detailed (or explicit in the case of a computational algorithm) or vague, dimensional or holistic, rule-based or just showing prototypical examples, etc. But the purpose of a rubric is to ensure the systemacity in scoring. As we discussed before, an auxilary theory is not a rubric. A rubric, by definition, makes an unobservable observable. 
+- The mapping from descriptive features to evaluative scores is defined by a rubric. The purpose of a rubric is to ensure the systemacity, consistency, and transparency in scoring. Ideally a rubric should be comprehensive and explicit -- as operational as a computational algorithm. In practice, though, it is often written, intetionally or unintentionally, with much room for (human) interpretation. A rubric can be detailed (or explicit in the case of a computational algorithm) or vague, dimensional or holistic, rule-based or just showing prototypical examples, etc. We shall revisit the issue of the freedom for (human) interpretation of a rubric as it is a critical issue in developing an automated scoring algorithm. Let us conclude with what are not rubrics: an auxilary theory is not a rubric; a simple Likerd scale asking "how do you feel about A" is not a rubric; a procedure to sum up points to get a total score is not a rubric.  
 
-Finally, scoring is the process of mapping features of an artifact to a numeric label according to a rubric. Let us define the scoring function, which is at the center of human rating and automated scoring. 
+To summarize, scoring is the process of mapping descriptive features of an artifact to a numeric label of an evaluative assessment statement according to a rubric. With this in mind, let us define the scoring function, which is at the center of human rating and automated scoring. 
 
 ## Scoring function and scoring quality
 
@@ -154,7 +154,7 @@ In our application, however, we seek to assign different raters and different nu
 
 # Optimizing Scoring Quality for Crowd-sourced Scoring
 
-Our goal in the second section is to design a scoring model where raters will be dynamically assigned to artifacts in order to maximize the quality of the scoring while minimizing a cost function for scoring. Results from the classical testing theory do not tell us how to dynamically allocate scoring resources to optimize scoring quality. Nevertheless they provide some basic parameters to start. 
+Our goal in this section is to design a scoring model where raters will be dynamically assigned to artifacts in order to maximize the quality of the scoring while minimizing a cost function for scoring. Results from the classical testing theory do not tell us how to dynamically allocate scoring resources to optimize scoring quality. Nevertheless they provide some basic parameters to start. 
 
 ## Defining a cost function
 
