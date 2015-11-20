@@ -32,9 +32,9 @@ Subsequent theories of measurement highlight the functions (or rules in Stevens,
 
 This classical notion of measurement, however, does not suit problems in scoring complex artifacts by humans or by computer algorithms. Specifically,
 
-- The notion of *observable responses* becomes murkey, because unlike in traditional tests where responses are explicitly and narrowly defined (e.g., marking option A), in the context of educational assessment artifacts to be evaluated often have to be characterized by a collection of (multidimensional and potentially infinitely large set of) features. A classic example is an essay, which can be decomposed into hundreds of linguistic features or more [@cite_e_rater]. What constitute *observable responses* becomes unclear. Instead, it is helpful to go back to Riley's [-@riley1963sociological] notion of "sense data at hand." The features that describe the artifact must be *sensed* by the person or algorithm who does the rating. This is the basis for rating.
+- The notion of *observable responses* becomes murkey, because unlike in traditional tests where responses are explicitly and narrowly defined (e.g., marking option A), in the context of educational assessment artifacts to be evaluated often have to be characterized by a collection of (multidimensional and potentially infinitely large set of) features. A classic example is an essay, which can be decomposed into hundreds of linguistic features or more [@cite_e_rater]. What constitutes an *observable response* in this case becomes unclear. Instead, it is helpful to go back to Riley's [-@riley1963sociological] notion of "sense data at hand." The features that describe the artifact must be *sensed* by the person or algorithm who does the rating. This is the basis for rating.
 
-- While the idea of an *unobservable concept* may be useful in constructing a rubric, it has little utility in the context of rating artifacts once a rubric is defined. By any definition of measurement, once we are able to assign numbers or labels in a systematic and justifiable way, the *unobservable* is now measured or observed. 
+- While the idea of an *unobservable concept* may be useful for constructing a rubric, it has little utility in the context of rating artifacts once a rubric is defined. By any definition of measurement, once we are able to assign numbers or labels in a systematic and justifiable way, the *unobservable* is now measured or observed. 
 
     + For those who wish to argue *measured* is different from *observed*, let's note that in order to claim an *observable response* is observed, you have to be able to systematically label it, which is logically equivalent to assigning a numerical value in the nominal scale, AKA measuring it.
     + This is in fact not a trivil point. In developing a scoring algorithm one routinely 
@@ -45,10 +45,23 @@ This classical notion of measurement, however, does not suit problems in scoring
 
     + A rubric can be called an operationalization of an auxilary theory, although this does little to clarify the relation. Operationalization is perhaps best understood as a set of putative rules justified on the basis of a theory but not necessarily uniquely predicted by it. In research operatinalization can sometimes be used as a hedge against situations where empirical (read: observed or measured) data do not turn out as predicted by the theory (suggesting that the measurement is ill-defined or of poor quality). In assessment a rubric is often revised when the mapping is found to be unsatisfactory. (**uh, what exactly am I arguing?**)
 
+A different take on the problem of measurement comes from the functionalism tradition known as the Brunswik's Lens theory [@wolf2005brunswik; @brunswik1955representative, @Hammond1966]. 
+
+
+
+To begin to formulate the logical problem of scoring or rating in educational assessment, we acknowledge its similarity with measurement in that both involve a systematic assignment of numbers (or logcial equivalents) to something of interest, be it an object, event, or abstract concept. We depart, however, from the classical notions of measurement in the following ways:
+
+- The "thing" to be evaluated is a concrete but potentially complex artifact (e.g., an essay or a video recording of a performance), rather than some abstract latent concepts. Being tangible doesn't imply that it is *observable*, however. 
+
+- An artifact can be distingished from other artifacts by a collection of descriptors, including, for example, *this essay uses the word 'sophistication'* or *the interviewee smiled at video frame 4000*. While Riley (1963) may call them "particular sense data at hand," we use the phrase *features* that is widely used in computational sciences to describe the potentially infinite number of ways to characterize an artifact. 
+
+- Rather than using the metaphor of measurement (implying unidimentionality and continuity), we see rating or scoring as foundamentally categorical. In other words, a rating or score is a label for a category. Assigning a score $x$ to an artifact $A$ is equivalent to the statement, *Artifact _A_ belongs to category _X_*. We do not presuppose any structure or dimentionality of the categories (e.g., categories can overlap, or one can have one category for each integer between 1 and 100), so long as they jointly divid the space of all possibilities exhaustively. 
+
+- Scoring or rating usually entails a rubric that describes how features of an artifact should be mapped to a numeric value (or a category label). The rubric can be detailed (or explicit in the case of a computational algorithm) or vague, dimensional or holistic, rule-based or just showing prototypical examples, etc. But the purpose of a rubric is to ensure the systemacity in scoring. As we discussed before, an auxilary theory is not a rubric. A rubric, by definition, makes an unobservable observable. 
+
+Finally, scoring is the process of mapping features of an artifact to a numeric label according to a rubric. Let us define the scoring function, which is at the center of human rating and automated scoring. 
 
 ## Scoring function and scoring quality
-
-Let us start by defining a scoring function, which is at the center of human rating and automated scoring. 
 
 Consider an artifact $A$ (e.g., a multimodal recording of a performance to be evaluated) represented as a multidimensional feature vector $\mathbf{\vec{A}}$ that is to be assigned a numeric value $x_i$ accoring to a certain criterion ( $r_i:\mathbf{\vec{A}}\mapsto \Re$), that maps $\mathbf{\vec{A}}$ to a real valued score by a rater $i$. We further assume that there exists a criterion $r$ (aka a rubric) that defines the "true" mapping ($r:\mathbf{\vec{A}}\mapsto \Re$), thus $x = r(\mathbf{\vec{A}})$ is the "true score" of $A$ according to $r$. 
 
@@ -150,17 +163,17 @@ though additional factor may come into play:
 - the availability of $i$, i.e., the wait time for $i$ to rate $A_j$
 - the opportunity cost of $i$ not rating other artifacts
 
-But in general we assume the cost of the rater is independent from the artifact $A$, or at least conditionally independent after some simple covariates are identified (e.g., the length of video recording). 
+But in general we assume the cost of the rater $i$ is independent from the artifact $A_j$, or at least conditionally independent after some simple covariates are identified (e.g., the length of video recording). 
 
 ## Quality of rater
 
 Let's attempt to define the quality of a rater. For a specific artifact $A_j$, the quality is the reduction of uncertainty about the true score distribution given $x_i$. 
 
-Over the population of $A$ the quality can be defined over the joint distribution, which is strict. We could also define the quality based on the marginal distributions, which leaves open the rater-item interaction, where $r_ij$ is different from $r_i$. We shall deal with the simple case first.
+Over the population of $A$ the quality can be defined over the joint distribution, which is strict. We could also define the quality based on the marginal distributions, which leaves open the rater-item interaction, where $r_{ij}$ is different from $r_i$. We shall deal with the simple case first.
 
 ## Optimizing for quality
 
-Here is a simple strategy for optimization: Given a pool of $m$ artifacts and $n$ raters each having a scoring function $r_1 \dots r_n$ (or $r_1j \dots r_nj$ for the artifact $A_j$, where $j= 1 \dots m$), we set a minimal threshold of quality, and minimize the cost function. 
+Here is a simple strategy for optimization: Given a pool of $m$ artifacts and $n$ raters each having a scoring function $r_1 \dots r_n$ (or $r_{1j} \dots r_{nj}$ for the artifact $A_j$, where $j= 1 \dots m$), we set a minimal threshold of quality, and minimize the cost function. 
 
 
 
