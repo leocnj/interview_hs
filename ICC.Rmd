@@ -32,6 +32,50 @@ Scoring or rating in the current context is the assignment of numbers (or symbol
 
 Subsequent theories of measurement highlight the functions (or rules in Stevens, 1951) that map from the subject to a number, although in trying to accommodate the measurement of abstract ideas they move toward the notion of latent variables. Carmines and Zeller [-@carmines1979reliability], for example, defines measurement as the process that links abstract concepts to empirical indicants, or "the particular sense data at hand" [@riley1963sociological]. Carmines and Zeller further noted that in order to link *observable response* (the "sense data at hand") on the one hand and the *underlying unobservable concept* on the other, there has to be a strong relationship between empirically grounded observations and the unobservable concepts. The warrant for this strong relationship -- and hence the strength of the measurement model -- comes from the *auxilary theory* that specifies the relationship between the concept and indicators. 
 
+(** need a figure here **)
+
+## Functional approaches
+
+A different take on the problem of measurement comes from the functionalism tradition known as the Brunswik's Lens theory [@wolf2005brunswik; @brunswik1955representative, @hammond1964analyzing; @hammond1966cognitive]. 
+
+Speekenbrink and Shanks [-@speekenbrink2008through] discussed the *cue validity* and *cue utility* in the lens theory. 
+
+(** copy the figure here **)
+
+## A rubric-centric approach
+
+Our goal for the project is a model to estimate the quality of a potentially large number of human raters and to define an algorithm to dynamically assign the human raters in order to optimize the scoring process. To this end neither the classical notion of measurement nor the lens theory provide a complete solution.  
+
+We begin with the observation that in educational assessment scoring is almost always guided by a rubric that maps descripters to evaluative categories. While the rubric may be revised in the development stage or in between administrations, raters are required to follow the rubric strictly and consistently for all test-takers until it is updated. The notion of unobservables, which is critical in the development and validation of the rubric, becomes nearly irrelevant to a rater because the rubric supposedly has made the unobservable observable. To the lens theory, the rubric (ideally) removes the concern about *cue validity* [@speekenbrink2008through]; any variance among raters should be caused by differences *cue utilization*. 
+
+This leads use to a simple definition of scoring that is reminiscent of S.S. Stevens' [-@stevens1951mathematics] definition of measurement: 
+
+> Scoring is a systematic assignment of numbers to an assessment artifact according to a rubric. 
+
+We now decompose the definition into its elements:
+
+### The artifact
+
+The "thing" to be evaluated is a concrete but potentially complex artifact (e.g., an essay or a video recording of a performance), rather than some abstract latent concept. The assignment of numbers must be based in one way or another on the artifact, not on abstract notions. A scorer or rater of an educational artifact cannot justify her assignment based on "this is how I felt;" it must be supported by evidence linked to the artifact. A fair scoring process must be as transparent as possible; declairing the "thing" to be rated on as unobservable or latent does nothing to solve the problem at hand. 
+
+### Descriptive features
+
+Being tangible or perceptable doesn't imply that the artifact is *observable*, however. Rarely is an artifact in an educational assessment so simple that it can be quantified by a single number or classification (if so scoring is accomplished). We assume that an artifact can be distingished from other artifacts by a collection of descriptors, including, for example, *this essay uses the word 'sophistication'* or *the interviewee smiled at video frame 4000*. While Riley (1963) may call them "particular sense data at hand," we use the phrase *features* that is widely used in computational sciences to describe the potentially infinite number of ways to characterize an artifact. Features are **descriptive**, as opposed to **evaluative**, in that they are used to tell one artifact from other (potential) examples. Value assignment is done with a rubric (see below). By definition the features will not fit in a single dimension (or else a single feature or number is needed to distinguish the artifacts). Their internal structure can be complex (e.g., may require a complex graph to describe) and uncertain (e.g., dynamic), in which case the $i.i.d.$ requirement in traditional linear statistical models will likely be violated.
+
+### Assigning numbers
+
+Scoring or rating in educational assessment is evaluative, although not necessarily in the sense of rank ordering. Rather than using the metaphor of measurement (implying unidimentionality and continuity), we see rating or scoring as foundamentally categorical, i.e., the score assigned is a label for a category. Assigning a score $x$ to an artifact $A$ is equivalent to the assessment statement, *Artifact _A_ belongs to category _X_*, which can be evaluative if the category _X_ implies value. We do not presuppose any structure or dimentionality of the categories (e.g., categories can overlap, or one can have one category for each integer between 1 and 100), so long as they jointly divid the space of all possibilities exhaustively. The collection of assessment statements can evaluate an artifact in a unidimensional scale, multidimentional profile, or any other ways language permits. (Footnote: hereafter we use scores, ratings, and assessment statements interchangeably because we see numeric scores as labels for a logical statement. There may be contexts in which we wish to distinguish them, e.g., in reporting.)
+
+### Rubric
+
+The mapping from descriptive features to evaluative scores is defined by a rubric. The purpose of a rubric is to ensure the systemacity, consistency, and transparency in scoring. Ideally a rubric should be comprehensive and explicit -- as operational as a computational algorithm. In practice, though, it is often written, intetionally or unintentionally, with much room for (human) interpretation. A rubric can be detailed (or explicit in the case of a computational algorithm) or vague, dimensional or holistic, rule-based or just showing prototypical examples, etc. We shall revisit the issue of the freedom for (human) interpretation of a rubric as it is a critical issue in developing an automated scoring algorithm. Let us conclude with what are not rubrics: an auxilary theory is not a rubric; a simple Likerd scale asking "how do you feel about A" is not a rubric; a procedure to sum up points to get a total score is not a rubric.  
+
+To summarize, scoring is the process of mapping descriptive features of an artifact to a numeric label of an evaluative assessment statement according to a rubric. With this in mind, let us define the scoring function, which is at the center of human rating and automated scoring. 
+
+----
+
+** The following block should be merged into the "Rubric-centril" section
+
 This classical notion of measurement, however, does not suit problems in scoring complex artifacts by humans or by computer algorithms. Specifically,
 
 - The notion of *observable responses* becomes murkey, because unlike in traditional tests where responses are explicitly and narrowly defined (e.g., marking option A), in the context of educational assessment artifacts to be evaluated often have to be characterized by a collection of (multidimensional and potentially infinitely large set of) features. A classic example is an essay, which can be decomposed into hundreds of linguistic features or more [@cite_e_rater]. What constitutes an *observable response* in this case becomes unclear. Instead, it is helpful to go back to Riley's [-@riley1963sociological] notion of "sense data at hand." The features that describe the artifact must be *sensed* by the person or algorithm who does the rating. This is the basis for rating.
@@ -46,48 +90,43 @@ This classical notion of measurement, however, does not suit problems in scoring
     + Note that the rubric is **not** the *auxilary theory* that is required in classic theories of measurement in order to provide warrant to the measurement [@carmines1979reliability]. A rubric is not a theory. Rather it is nothing more or less than a system of rules or a mapping from "sense data at hand" about an artifact to a numeric value that we shall call the rating or score for the artifact. Sometimes it is justified by theories; other times it may be putative.
 
     + A rubric can be called an operationalization of an auxilary theory, although this does little to clarify the relation. Operationalization is perhaps best understood as a set of putative rules justified on the basis of a theory but not necessarily uniquely predicted by it. In research operatinalization can sometimes be used as a hedge against situations where empirical (read: observed or measured) data do not turn out as predicted by the theory (suggesting that the measurement is ill-defined or of poor quality). In assessment a rubric is often revised when the mapping is found to be unsatisfactory. (**uh, what exactly am I arguing?**)
+    
+----
 
-## Functional approaches
+## Scoring function
 
-A different take on the problem of measurement comes from the functionalism tradition known as the Brunswik's Lens theory [@wolf2005brunswik; @brunswik1955representative, @Hammond1966]. 
-
-## A computational approach
-
-Scoring or rating in educational assessment is similar to measurement in that both involve a systematic assignment of numbers (or logcial equivalents) to something of interest, be it an object, event, or abstract concept. It differs, however, from the classical notions of measurement in the following ways:
-
-- The "thing" to be evaluated is a concrete but potentially complex artifact (e.g., an essay or a video recording of a performance), rather than some abstract latent concept. The assignment of numbers must be based in one way or another on the artifact, not on abstract notions. A scorer or rater of an educational artifact cannot justify her assignment based on "this is how I felt;" it must be supported by evidence linked to the artifact. A fair scoring process must be as transparent as possible; declairing the "thing" to be rated on as unobservable or latent does nothing to solve the problem at hand. 
-
-- Being tangible or perceptable doesn't imply that the artifact is *observable*, however. Rarely is an artifact in an educational assessment so simple that it can be quantified by a single number or classification (if so scoring is accomplished). We assume that an artifact can be distingished from other artifacts by a collection of descriptors, including, for example, *this essay uses the word 'sophistication'* or *the interviewee smiled at video frame 4000*. While Riley (1963) may call them "particular sense data at hand," we use the phrase *features* that is widely used in computational sciences to describe the potentially infinite number of ways to characterize an artifact. Features are **descriptive**, as opposed to **evaluative**, in that they are used to tell one artifact from other (potential) examples. Value assignment is done with a rubric (see below). By definition the features will not fit in a single dimension (or else a single feature or number is needed to distinguish the artifacts). Their internal structure can be complex (e.g., may require a complex graph to describe) and uncertain (e.g., dynamic), in which case the $i.i.d.$ requirement in traditional linear statistical models will likely be violated.
-
-- Scoring or rating in educational assessment is evaluative, although not necessarily in the sense of rank ordering. Rather than using the metaphor of measurement (implying unidimentionality and continuity), we see rating or scoring as foundamentally categorical, i.e., the score assigned is a label for a category. Assigning a score $x$ to an artifact $A$ is equivalent to the assessment statement, *Artifact _A_ belongs to category _X_*, which can be evaluative if the category _X_ implies value. We do not presuppose any structure or dimentionality of the categories (e.g., categories can overlap, or one can have one category for each integer between 1 and 100), so long as they jointly divid the space of all possibilities exhaustively. The collection of assessment statements can evaluate an artifact in a unidimensional scale, multidimentional profile, or any other ways language permits. (Footnote: hereafter we use scores, ratings, and assessment statements interchangeably because we see numeric scores as labels for a logical statement. There may be contexts in which we wish to distinguish them, e.g., in reporting.)
-
-- The mapping from descriptive features to evaluative scores is defined by a rubric. The purpose of a rubric is to ensure the systemacity, consistency, and transparency in scoring. Ideally a rubric should be comprehensive and explicit -- as operational as a computational algorithm. In practice, though, it is often written, intetionally or unintentionally, with much room for (human) interpretation. A rubric can be detailed (or explicit in the case of a computational algorithm) or vague, dimensional or holistic, rule-based or just showing prototypical examples, etc. We shall revisit the issue of the freedom for (human) interpretation of a rubric as it is a critical issue in developing an automated scoring algorithm. Let us conclude with what are not rubrics: an auxilary theory is not a rubric; a simple Likerd scale asking "how do you feel about A" is not a rubric; a procedure to sum up points to get a total score is not a rubric.  
-
-To summarize, scoring is the process of mapping descriptive features of an artifact to a numeric label of an evaluative assessment statement according to a rubric. With this in mind, let us define the scoring function, which is at the center of human rating and automated scoring. 
-
-## Scoring function and scoring quality
-
-Consider an artifact $A$ (e.g., a multimodal recording of a performance to be evaluated) represented as a multidimensional feature vector $\mathbf{\vec{A}}$ that is to be assigned a numeric value $x_i$ accoring to a certain criterion ( $r_i:\mathbf{\vec{A}}\mapsto \Re$), that maps $\mathbf{\vec{A}}$ to a real valued score by a rater $i$. We further assume that there exists a criterion $r$ (aka a rubric) that defines the "true" mapping ($r:\mathbf{\vec{A}}\mapsto \Re$), thus $x = r(\mathbf{\vec{A}})$ is the "true score" of $A$ according to $r$. 
+Let us now formalize the model for scoring. Consider an artifact $A$ (e.g., a multimodal recording of a performance to be evaluated) represented as a multidimensional feature vector $\mathbf{\vec{A}}$ that is to be assigned a numeric value $x_i$ accoring to a certain criterion ( $r_i:\mathbf{\vec{A}}\mapsto \Re$), that maps $\mathbf{\vec{A}}$ to a real valued score by a rater $i$. We further assume that there exists a rubric $r$ that defines the "true" mapping ($r:\mathbf{\vec{A}}\mapsto \Re$), thus $x = r(\mathbf{\vec{A}})$ is the "true score" of $A$ according to $r$. 
 
 We can further speculate that the mapping occurs in two steps. The first is a mapping from the feature set to a probability distribution of possible scores, and a second step is taken to choose the value with the highest probability. Hence we can redefine the scoring function as:
 
-\[ r:\mathbf{\vec{A}}\mapsto p(x) \]
+\[ r:\mathbf{\vec{A}}\mapsto p(X=x) \]
 
-where $p(x)$ is the likelihood of value $x$ represented as a probability distribution. The rater always chooses $x$ with the greatest likelihood.
+where $p(X=x)$ is the likelihood of value $x$ represented as a probability distribution. The rater always chooses $X=x$ with the greatest likelihood.
+
+The above is construed differently from the classical testing theory due to the application we will pursue in Section 4. 
+
+The artifact $A$ and its feature set $\mathbf{\vec{A}}$ are invariant. In automated scoring models the feature set will be extracted algorithmically and hence consistently. We also assume that all human raters perceive the features equally (e.g., all raters scoring a video performance can see the video and hear the speech), though they would weigh the features differently in scoring. This raises several interesing possibilities. 
+
+- A rater may fail to consider certain features prescribed in a rubric. 
+- A rater may have taken into account additional features that is not on the rubric. Computationally we expand the feature set to include the idiosyncratic features but note that the official rubric $r$ assign zero weights to these features.
+- An algorithm may not be able to extract certain features and hence fails to consider them.
+- An algorithm may computationally create interim features that no human or rubric would consider. 
+
+These are situations that need to be resolved.
+
+Our definition also implies that differences in ratings across raters are caused by differential mapping functions $r_i$. This is a departure from the general notion in the classical testing theory, where it is typically assumed that $x_i = x + e_i$ where $e_i$ is $i.i.d.$. We push the individual differences from scores to the scoring function because an automated scoring function is essentially an algorithmic reliazation of such a scoring function. Furthermore, we anticipate idiosyncratic yet self-consistent scoring functions for individual raters in a crowd-sourced human scoring study. We need to model these rather than simply sweeping them under the rug of error variance. 
+
+
+## Scoring quality
 
 The quality of $x_i$ is intuitively the reduction of uncertainty about $x$ when $x_i$ is known. In other words, the posterior distribution of the true score should be narrowed after rater $i$ rated.
 
-\[ p(x|x_i) \]
+\[ p(X=x|x_i) \]
 
-The above is construed differently from the classical testing theory due to the application we will pursue in Section 3. 
+We construe the quality of a score in term of how it shed light on the "true" score, not necessarily on how numerically close it is to the true score. We do not assume the numeric value is on something more than a nominal scale. For example, $x$ may represent a label for a statement. In this case, $x_i - x$ is undefined. However, $p(X=x|x_i)$ always is.
 
-- The artifact $A$ and its feature set $\mathbf{\vec{A}}$ are invariant. In automated scoring models the feature set will be extracted algorithmically and hence consistently. We also assume that all human raters perceive the features equally (e.g., all raters scoring a video performance can see the video and hear the speech), though they would weigh the features differently in scoring.
+Our formulation has similarities with the functionalism tradition of Brunswik [@brunswik1955representative, @hammond1966cognitive]. Like Brunswik (1955) we see scoring -- or learning to score -- as a problem of multidimensional probabilistic learning task, where the rater strives to discover the optimal combination of observed proximal features of the (distal) artifact in order to achieve a high quality rating. On the other hand, we are less concerned with the ecological functionlism of Brunswik's theory than finding a framework to support a computational model. We also do not limit ourselves to the multiple regression models that have been popular in the literature [@hammond1966cognitive; @speekenbrink2008through].
 
-- Differences in ratings across raters are caused by differential mapping functions $r_i$. This is a departure from the general notion in the classical testing theory, where it is typically assumed that $x_i = x + e_i$ where $e_i$ is $i.i.d.$. We push the individual differences from scores to the scoring function because an automated scoring function is essentially an algorithmic reliazation of such a scoring function. Furthermore, we anticipate idiosyncratic yet self-consistent scoring functions for individual raters in a crowd-sourced human scoring study. We need to model these rather than simply sweeping them under the rug of error variance. 
-
-- We construe the quality of a score in term of how it shed light on the "true" score, not necessarily on how numerically close it is to the true score. We do not assume the numeric value is on something more than a nominal scale. For example, $x$ may represent a label for a statement. In this case, $x_i - x$ is undefined. However, $p(x|x_i)$ always is.
-
-Our formulation has similarities with the functionalism tradition of Brunswik [@brunswik1955representative, @Hammond1966]. Like Brunswik (1955) we see scoring -- or learning to score -- as a problem of multidimensional probabilistic learning task, where the rater strives to discover the optimal combination of observed proximal features of the (distal) artifact in order to achieve a high quality rating. On the other hand, we are less concerned with the ecological functionlism of Brunswik's theory than finding a framework to support a computational model. We also do not limit ourselves to the multiple regression models that have been popular in the literature [@Hammand1966; @somebodyRecently].
 
 # Metrics of Quality of Scoring
 
