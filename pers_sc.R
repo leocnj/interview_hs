@@ -182,4 +182,7 @@ df.rnd1.other <- rbind_list(onetrait(selt, "FRIENDLY"), onetrait(selt, "NERVOUS"
                             onetrait(selt, "PROF"), onetrait(selt, "SOPH"),
                             onetrait(selt, "COHERENT"))
 
-                            
+# 2/26/2016
+# save for YSY
+write.csv(subset(pers_twornds, pers_twornds$type != 'Holistic'),
+                 file = 'hs_final/interview_2014_pers.csv', row.names = F)                           
