@@ -69,4 +69,13 @@ fit.gp03<- lm(form, filter(wide_item, gp=="G3"))
 fit.gp04<- lm(form, filter(wide_item, gp=="G4"))
 
 # save DFs
-save(pers_twornds, df.rnd1.other, bars_indv, bars_persubj, wide_subj, wide_item,file="vi2014.RData")
+save(pers_twornds, df.rnd1.other, bars_indv, bars_persubj, wide_subj, wide_item,
+     file="vi2014.RData")
+
+# 2/26/2016
+# save for YSY
+write.csv(subset(pers_twornds, pers_twornds$type != 'Holistic'),
+          file = 'hs_final/interview_2014_pers.csv', row.names = F)                           
+
+write.csv(bars_indv, file = 'hs_final/interview_2014_bars.csv', row.names = F)
+
