@@ -3,3 +3,5 @@
 *.pper
 .Rproj.user
 .RData
+
+.Rhistory
