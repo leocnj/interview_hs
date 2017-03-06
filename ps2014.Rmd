@@ -1,0 +1,82 @@
+---
+title: "ps2014 Public Speaking 2014 Data"
+output: html_notebook
+---
+
+This notebook serves the following functions:
+
+- load and parse human rating results on the ps2014 data set
+- analyze rating quality
+- link human ratings on both PS and IV tasks.
+
+
+```{r lib}
+library(tidyverse)
+
+```
+
+Using tidyverse::readxl to load human ratings stored in Excel
+```{r hs_load}
+library(readxl)
+ps<-read_excel('hsraw/PublicSpeakingSkillsAssessment-data.xlsx')
+
+# Used non-verbal behavior that reinforced the (verbal) message	Had a cohesive presentation	Was easy to understand	Used monotonous speech	Used appropriately sophisticated expressions	Was nervous	Kept my attention throughout the entire presentation	Did not have a well-paced presentation
+ps <- ps %>%
+  setNames(., 
+           c("rater_id",
+             "video_id",
+             "rubric_ps1",
+             "rubric_ps2",
+             "rubric_ps3",
+             "rubric_ps4",
+             "holistic",
+             "pers_1",
+             "pers_2",
+             "pers_3",
+             "pers_4",
+             "pers_5",
+             "char_nonverbal",
+             "char_cohesion",
+             "char_understandable",
+             "char_monotone",
+             "char_expression",
+             "char_nervous",
+             "char_attention",
+             "char_pace"
+))
+# remove 1st row with sub-category names
+ps <- ps[-1,]
+# convert char cols to dbl.
+# http://bit.ly/2mXJz7V
+ps <- ps %>% 
+  mutate_at(vars(matches("rubric|pers|char")),funs(as.numeric))
+
+```
+
+```{r irr_funs}
+library(irr)
+my.irr <- function(mx){
+  icc <- icc(mx, model="twoway", type="consistency", unit="average")$value
+  corr <- meancor(mx)$value
+  c(icc, corr)
+  
+}
+```
+
+```{r one_rating}
+one_rating <- function(score_name) {
+  one_tb <- ps %>%
+  select_(.dots = c('rater_id', 'video_id', score_name))
+  one_tb <-
+  one_tb[!duplicated(one_tb[, c("rater_id", "video_id")]),] %>%
+  spread_(key_col = 'rater_id', value_col = score_name)
+  return(my.irr(one_tb[2:5]))
+}
+
+ratings <- colnames(ps)[3:20]
+irr_df <- sapply(ratings, FUN = one_rating)
+
+```
+
+
+
