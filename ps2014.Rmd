@@ -14,7 +14,9 @@ This notebook serves the following functions:
 library(tidyverse)
 
 ```
+# Public Speaking Data Set
 
+## Data reading
 Using tidyverse::readxl to load human ratings stored in Excel
 ```{r hs_load}
 library(readxl)
@@ -53,6 +55,7 @@ ps <- ps %>%
 
 ```
 
+## Rating Quality
 ```{r irr_funs}
 library(irr)
 my.irr <- function(mx){
@@ -75,8 +78,65 @@ one_rating <- function(score_name) {
 
 ratings <- colnames(ps)[3:20]
 irr_df <- sapply(ratings, FUN = one_rating)
+irr_df <- t(irr_df)
+colnames(irr_df) <- c('ICC', 'meanR')
+show(irr_df)
+```
+
+As for rating quality on interview data, ICC values can be found in vi2014.html.
+
+# Cross-analysis
+
+## Cross two tasks
+
+For each subject, averaged public speaking scores vs. averaged interview scores.
+```{r}
+library(stringr)
+# for persubj ratings, get subj and cat
+getsubj <- function(name){
+  subj <- str_sub(name, 2, 3)
+  subj
+
+}
+
+ps_subj <- ps %>%
+    mutate(subj=getsubj(video_id)) %>%
+    group_by(subj) %>%
+    summarise(hscore_ave = mean(holistic))
 
 ```
 
+Using bars_persubj_final (36x4) object, to compute correlations. The very low correlation
+between interview and presentation shows that it is important to measure job-related skill during interviews.
 
+```{r}
+load(file="vi2014.RData")
+twotasks_subj <- merge(ps_subj, bars_persubj_final, by="subj")
+cor(twotasks_subj[,2:5])
+
+```
+
+## Within a task, check features' inter-correlations.
+
+### interview
+```{r}
+# from pers_wide (vid, big 5, holistic)
+#      bars_indv (videoID, mean)
+interview_item <-
+  merge(pers_wide[, 1:7], bars_indv[c("videoID", "mean", "gp")], by.x = "vid", by.y =
+  "videoID")
+  cor(interview_item[, 2:8], use = "complete.obs")
+
+
+```
+
+### presentation
+```{r}
+ps_item <- ps %>%
+  select(video_id:char_pace) %>%
+  group_by(video_id) %>%
+  summarise_each(funs(mean))
+
+cor(ps_item[,2:19])
+```
 
