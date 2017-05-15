@@ -12,6 +12,8 @@ This notebook serves the following functions:
 
 ```{r lib}
 library(tidyverse)
+library(stringr)
+library(magrittr)
 
 ```
 # Public Speaking Data Set
@@ -91,7 +93,6 @@ As for rating quality on interview data, ICC values can be found in vi2014.html.
 
 For each subject, averaged public speaking scores vs. averaged interview scores.
 ```{r}
-library(stringr)
 # for persubj ratings, get subj and cat
 getsubj <- function(name){
   subj <- str_sub(name, 2, 3)
@@ -138,5 +139,40 @@ ps_item <- ps %>%
   summarise_each(funs(mean))
 
 cor(ps_item[,2:19])
+```
+
+Analyze motion features' contributions on predicting human rated scores.
+```{r vamp_corr, echo=TRUE}
+load("../vamp_postproc/ps2014_vamp.RData")
+
+tidy_id <- function(x){
+  tks <- str_match(x, "SELTCAWRS_(\\d+)([enpi_]+)")
+  if(str_length(tks[2]) == 3){
+    vid = str_sub(tks[2], 2,3)
+  }
+  else{
+    vid = tks[2]
+  }
+  new_id <- paste("P", vid, tks[3], sep = "")
+  new_id <- str_replace(new_id, "(_)$", "") # _ before string end
+
+}
+
+feats_persession <- feats_persession %>%
+  mutate(video_id = unlist(lapply(labsession, tidy_id))) %>%
+  select(-(starts_with("symmetry")))
+
+ps_item_vamp <- merge(ps_item, feats_persession[,2:46], by="video_id")
+vamp_tb<- cor(ps_item_vamp[,20:63], ps_item_vamp[,2:6], use = "na.or.complete")
+
+```
+
+Only showing correlation absolute value is higher than $0.2$
+
+```{r}
+vamp_tb_high <- vamp_tb
+vamp_tb_high[abs(vamp_tb_high) < 0.2] <- ""
+show(vamp_tb_high)
+
 ```
 
